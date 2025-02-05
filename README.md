@@ -16,3 +16,9 @@ pedido continua registrado com o preço real que foi vendido na época).
  Um usuário pode ter um ou mais "roles", que são os perfis de acesso deste usuário
 no sistema (client, admin). 
 ![image](https://github.com/user-attachments/assets/43835f82-d561-43af-8319-8f00cbb1e3fd)
+
+# **Caso de Uso**
+_______________________________________________________________________________
+
+![image](https://github.com/user-attachments/assets/141e57a2-cbaf-4853-ac49-6db038f411ef)
+
