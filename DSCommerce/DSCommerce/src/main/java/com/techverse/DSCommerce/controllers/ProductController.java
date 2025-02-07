@@ -2,18 +2,15 @@ package com.techverse.DSCommerce.controllers;
 
 
 import com.techverse.DSCommerce.dtos.ProductDto;
-import com.techverse.DSCommerce.entities.Product;
 import com.techverse.DSCommerce.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -32,9 +29,38 @@ public class ProductController {
     }
 
     @GetMapping
-    public Page<ProductDto> getAllProducts(Pageable pageable) {
-        return productService.findAll(pageable);
-
+    public ResponseEntity<Page<ProductDto>> getAllProducts(Pageable pageable) {
+        Page<ProductDto> productDtos = productService.findAll(pageable);
+        return ResponseEntity.ok(productDtos);
     }
+
+    @PostMapping
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+        productDto = productService.save(productDto);
+        if (productDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(productDto.getId()).toUri();
+        return ResponseEntity.created(uri).body(productDto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable long id, @RequestBody ProductDto productDto) {
+        productDto = productService.update(id, productDto);
+        if (productDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(productDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable long id) {
+        productService.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 }

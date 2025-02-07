@@ -27,29 +27,23 @@ public class ProductDto {
         description = product.getDescription();
         price = product.getPrice();
         imgUrl = product.getImgUrl();
-
     }
-
 
     public long getId() {
         return id;
     }
 
-
     public String getName() {
         return name;
     }
-
 
     public String getDescription() {
         return description;
     }
 
-
     public double getPrice() {
         return price;
     }
-
 
     public String getImgUrl() {
         return imgUrl;

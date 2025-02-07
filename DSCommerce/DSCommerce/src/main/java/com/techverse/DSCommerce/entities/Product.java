@@ -1,7 +1,6 @@
 package com.techverse.DSCommerce.entities;
 
 import jakarta.persistence.*;
-import org.w3c.dom.Text;
 
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +30,8 @@ public class Product {
     private Set<OrderItem> items = new HashSet<>();
 
 
-    public Product() {}
+    public Product() {
+    }
 
     public Product(long id, String name, String description, double price, String imgUrl) {
         this.id = id;
@@ -84,6 +84,7 @@ public class Product {
     public Set<OrderItem> getItems() {
         return items;
     }
+
     public List<Order> getOrders() {
         return items.stream().map(OrderItem::getOrder).toList();
     }
