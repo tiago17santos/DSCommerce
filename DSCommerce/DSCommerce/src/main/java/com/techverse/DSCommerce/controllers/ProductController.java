@@ -3,6 +3,7 @@ package com.techverse.DSCommerce.controllers;
 
 import com.techverse.DSCommerce.dtos.ProductDto;
 import com.techverse.DSCommerce.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,13 +30,14 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductDto>> getAllProducts(Pageable pageable) {
-        Page<ProductDto> productDtos = productService.findAll(pageable);
+    public ResponseEntity<Page<ProductDto>> getAllProducts(Pageable pageable,
+            @RequestParam(name = "name", defaultValue = "") String name) {
+        Page<ProductDto> productDtos = productService.findAll(name, pageable);
         return ResponseEntity.ok(productDtos);
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+    public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) {
         productDto = productService.save(productDto);
         if (productDto == null) {
             return ResponseEntity.notFound().build();
@@ -46,7 +48,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable long id, @RequestBody ProductDto productDto) {
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable long id, @Valid @RequestBody ProductDto productDto) {
         productDto = productService.update(id, productDto);
         if (productDto == null) {
             return ResponseEntity.notFound().build();
