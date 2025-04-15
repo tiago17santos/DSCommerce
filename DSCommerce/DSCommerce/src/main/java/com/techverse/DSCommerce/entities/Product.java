@@ -89,6 +89,10 @@ public class Product {
         return items.stream().map(OrderItem::getOrder).toList();
     }
 
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

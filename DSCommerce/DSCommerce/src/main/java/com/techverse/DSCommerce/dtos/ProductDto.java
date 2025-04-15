@@ -1,9 +1,14 @@
 package com.techverse.DSCommerce.dtos;
 
+import com.techverse.DSCommerce.entities.Category;
 import com.techverse.DSCommerce.entities.Product;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDto {
 
@@ -17,6 +22,9 @@ public class ProductDto {
     @Positive(message = "O preço deve ser positivo")
     private double price;
     private String imgUrl;
+
+    @NotEmpty(message = "Deve ter pelo menos uma categoria")
+    private List<CategoryDto> categories = new ArrayList<>();
 
     public ProductDto() {
     }
@@ -35,6 +43,9 @@ public class ProductDto {
         description = product.getDescription();
         price = product.getPrice();
         imgUrl = product.getImgUrl();
+        for (Category cat : product.getCategories()) {
+            categories.add(new CategoryDto(cat));
+        }
     }
 
     public long getId() {
@@ -55,6 +66,10 @@ public class ProductDto {
 
     public String getImgUrl() {
         return imgUrl;
+    }
+
+    public List<CategoryDto> getCategories() {
+        return categories;
     }
 
 }

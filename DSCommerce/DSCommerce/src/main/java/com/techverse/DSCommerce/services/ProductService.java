@@ -1,6 +1,9 @@
 package com.techverse.DSCommerce.services;
 
+import com.techverse.DSCommerce.dtos.CategoryDto;
 import com.techverse.DSCommerce.dtos.ProductDto;
+import com.techverse.DSCommerce.dtos.ProductMinDto;
+import com.techverse.DSCommerce.entities.Category;
 import com.techverse.DSCommerce.entities.Product;
 import com.techverse.DSCommerce.repositories.ProductRepository;
 import com.techverse.DSCommerce.services.exceptions.DatabaseException;
@@ -26,9 +29,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDto> findAll(String name, Pageable pageable) {
+    public Page<ProductMinDto> findAll(String name, Pageable pageable) {
         Page<Product> result = productRepository.searchByName(name, pageable);
-        return result.map(ProductDto::new);
+        return result.map(ProductMinDto::new);
     }
 
     @Transactional
@@ -51,13 +54,6 @@ public class ProductService {
         }
     }
 
-    public void copyDtoToEntity(Product entity, ProductDto dto) {
-        entity.setName(dto.getName());
-        entity.setDescription(dto.getDescription());
-        entity.setPrice(dto.getPrice());
-        entity.setImgUrl(dto.getImgUrl());
-    }
-
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(long id) {
         if (!productRepository.existsById(id)) {
@@ -69,6 +65,19 @@ public class ProductService {
             throw new DatabaseException("Falha de integridade referencial");
         }
 
+    }
+
+    public void copyDtoToEntity(Product entity, ProductDto dto) {
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        entity.setPrice(dto.getPrice());
+        entity.setImgUrl(dto.getImgUrl());
+        entity.getCategories().clear();
+        for (CategoryDto catDto : dto.getCategories()) {
+            Category cat = new Category();
+            cat.setId(catDto.getId());
+            entity.getCategories().add(cat);
+        }
     }
 
 
