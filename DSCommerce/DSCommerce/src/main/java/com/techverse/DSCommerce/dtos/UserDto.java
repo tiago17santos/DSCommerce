@@ -23,13 +23,13 @@ public class UserDto {
         this.birthDate = birthDate;
     }
 
-    public UserDto(User entity) {
-        id = entity.getId();
-        name = entity.getName();
-        email = entity.getEmail();
-        phone = entity.getPhone();
-        birthDate = entity.getBirthDate();
-        for (GrantedAuthority role : entity.getAuthorities()) {
+    public UserDto(User user) {
+        id = user.getId();
+        name = user.getName();
+        email = user.getEmail();
+        phone = user.getPhone();
+        birthDate = user.getBirthDate();
+        for (GrantedAuthority role : user.getAuthorities()) {
             roles.add(role.getAuthority());
         }
     }
